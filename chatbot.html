@@ -218,6 +218,13 @@
         }
 
         .message.user {
+            justify-content: flex-end;
+        }
+
+        .message.user .message-wrapper {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
             flex-direction: row-reverse;
         }
 
@@ -244,10 +251,12 @@
 
         .message-content {
             max-width: 70%;
+            min-width: 80px;
             padding: 0.8rem 1rem;
             border-radius: 18px;
             line-height: 1.5;
             word-wrap: break-word;
+            width: fit-content;
         }
 
         .user .message-content {
@@ -665,15 +674,25 @@
             
             const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
             
-            messageDiv.innerHTML = `
-                <div class="message-avatar">
-                    ${sender === 'user' ? '👤' : '🤖'}
-                </div>
-                <div>
-                    <div class="message-content">${formatMessage(content)}</div>
-                    <div class="message-time">${time}</div>
-                </div>
-            `;
+            if (sender === 'user') {
+                messageDiv.innerHTML = `
+                    <div class="message-wrapper">
+                        <div class="message-avatar">👤</div>
+                        <div>
+                            <div class="message-content">${formatMessage(content)}</div>
+                            <div class="message-time">${time}</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="message-avatar">🤖</div>
+                    <div>
+                        <div class="message-content">${formatMessage(content)}</div>
+                        <div class="message-time">${time}</div>
+                    </div>
+                `;
+            }
             
             // Remove welcome message if it exists
             const welcomeMsg = chatMessages.querySelector('.welcome-message');
