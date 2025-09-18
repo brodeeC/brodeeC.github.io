@@ -1,160 +1,433 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Brodee</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brodee - Where Ideas Take Flight</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            animation: gradientMove 12s ease-in-out infinite alternate;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+            position: relative;
         }
-        @keyframes gradientMove {
-            0% { background: linear-gradient(135deg, #e0e7ff 0%, #f7f7fa 100%);}
-            33% { background: linear-gradient(135deg, #6366f1 0%, #e0e7ff 100%);}
-            66% { background: linear-gradient(135deg, #f472b6 0%, #6366f1 100%);}
-            100% { background: linear-gradient(135deg, #e0e7ff 0%, #f7f7fa 100%);}
-        }
-        .floating-emoji {
+
+        /* Subtle animated background particles */
+        .bg-particles {
             position: fixed;
-            left: 10vw;
-            top: 10vh;
-            font-size: 3rem;
-            animation: floatEmoji 4s ease-in-out infinite alternate;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: float 6s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10px) rotate(360deg); opacity: 0; }
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
             z-index: 10;
-            filter: drop-shadow(0 2px 8px #6366f1);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            text-align: center;
         }
-        @keyframes floatEmoji {
-            0% { transform: translateY(0);}
-            100% { transform: translateY(40px);}
+
+        /* Header section */
+        .header {
+            margin-bottom: 3rem;
         }
-        .theme-switcher, .confetti-btn {
-            transition: transform 0.2s;
+
+        .logo {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 8s ease-in-out infinite;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
         }
-        .theme-switcher:active, .confetti-btn:active {
-            transform: scale(1.08) rotate(-2deg);
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            25% { background-position: 100% 50%; }
+            50% { background-position: 50% 100%; }
+            75% { background-position: 50% 0%; }
         }
-        .rainbow-border {
-            border: 3px solid;
-            border-image: linear-gradient(90deg,#6366f1,#f472b6,#e0e7ff,#6366f1) 1;
-            box-shadow: 0 2px 16px rgba(99,102,241,0.12);
+
+        .tagline {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            font-weight: 300;
         }
-        .quote-box {
-            animation: fadeIn 0.7s;
+
+        /* Navigation/Action buttons */
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 3rem;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px);}
-            to { opacity: 1; transform: translateY(0);}
-        }
-        .surprise-btn {
-            margin: 10px;
-            padding: 8px 16px;
-            border-radius: 6px;
-            background: linear-gradient(90deg, #f472b6 60%, #6366f1 100%);
-            color: #fff;
-            font-weight: bold;
+
+        .btn {
+            padding: 0.8rem 2rem;
             border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 2px 8px rgba(60,60,120,0.08);
-            transition: background 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: inline-block;
         }
-        .surprise-btn:hover {
-            background: linear-gradient(90deg, #6366f1 60%, #f472b6 100%);
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Quote section */
+        .quote-section {
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+
+        .quote-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s ease;
+            font-size: 1.1rem;
+            font-style: italic;
+        }
+
+        .quote-box.updating {
+            transform: scale(0.95);
+            opacity: 0.7;
+        }
+
+        /* Theme controls */
+        .theme-controls {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 100;
+        }
+
+        .theme-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Dark theme */
+        body.dark {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        }
+
+        /* Ocean theme */
+        body.ocean {
+            background: linear-gradient(135deg, #667db6 0%, #0082c8, #0082c8, #667db6 100%);
+        }
+
+        /* Sunset theme */
+        body.sunset {
+            background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+        }
+
+        /* Floating emoji */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .floating-emoji {
+            position: absolute;
+            font-size: 2rem;
+            animation: gentleFloat 4s ease-in-out infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .theme-controls {
+                top: 1rem;
+                right: 1rem;
+            }
+            
+            .actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                min-width: 200px;
+            }
+        }
+
+        /* Smooth transitions for theme changes */
+        body, .quote-box, .btn {
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
     </style>
 </head>
 <body>
-    <span class="floating-emoji" id="emoji">✨</span>
-    <div id="mainContent" class="rainbow-border">
-        <h1 id="mainTitle">Brodee</h1>
-        <a href="chatbot.html">Chatbot</a>
-        <button class="theme-switcher" id="themeBtn">Switch Theme</button>
-        <button class="confetti-btn" id="confettiBtn">🎉 Confetti!</button>
-        <div class="quote-box" id="quoteBox">Click below for a random quote!</div>
-        <button class="theme-switcher" id="quoteBtn">Show Random Quote</button>
-        <button class="surprise-btn" id="surpriseBtn">Surprise Me!</button>
+    <!-- Background particles -->
+    <div class="bg-particles" id="particles"></div>
+    
+    <!-- Floating elements -->
+    <div class="floating-elements" id="floatingElements"></div>
+    
+    <!-- Theme controls -->
+    <div class="theme-controls">
+        <button class="theme-btn" id="themeBtn" title="Switch Theme">🌙</button>
+        <button class="theme-btn" id="magicBtn" title="Magic Mode">✨</button>
     </div>
+
+    <!-- Main content -->
+    <div class="container">
+        <div class="header">
+            <h1 class="logo" id="logo">Brodee</h1>
+            <p class="tagline">Where ideas transform into reality</p>
+        </div>
+
+        <div class="actions">
+            <a href="chatbot.html" class="btn btn-primary">Launch Chatbot</a>
+            <button class="btn btn-secondary" id="surpriseBtn">Surprise Me</button>
+            <button class="btn btn-secondary" id="quoteBtn">Daily Wisdom</button>
+        </div>
+
+        <div class="quote-section">
+            <div class="quote-box" id="quoteBox">
+                "Innovation distinguishes between a leader and a follower." — Steve Jobs
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Theme switcher
-        const themeBtn = document.getElementById('themeBtn');
-        let darkMode = false;
-        themeBtn.onclick = () => {
-            darkMode = !darkMode;
-            if (darkMode) {
-                document.body.style.background = "linear-gradient(135deg, #22223b 0%, #6366f1 100%)";
-                document.body.style.color = "#f7f7fa";
-                document.getElementById('mainContent').style.background = "#3a3a7c22";
-            } else {
-                document.body.style.background = "";
-                document.body.style.color = "";
-                document.getElementById('mainContent').style.background = "";
-            }
-        };
-
-        // Floating emoji randomizer
-        const emojis = ["✨","🚀","😎","🌈","🔥","🎈","🦄","💡","🎉","🍕","🥳","🧠"];
-        setInterval(() => {
-            document.getElementById('emoji').textContent = emojis[Math.floor(Math.random()*emojis.length)];
-        }, 1200);
-
-        // Random quote generator
+        // Enhanced quote collection
         const quotes = [
-            "Creativity is intelligence having fun. – Einstein",
-            "Code is like humor. When you have to explain it, it’s bad.",
-            "Simplicity is the soul of efficiency.",
-            "Make it work, make it right, make it fast.",
-            "The best way to predict the future is to invent it.",
-            "Why do Java developers wear glasses? Because they don’t see sharp.",
-            "First, solve the problem. Then, write the code.",
-            "Brodee: Where ideas become reality!",
-            "Eat. Sleep. Code. Repeat.",
-            "You miss 100% of the bugs you don't catch.",
-            "Keep calm and push to main.",
-            "May the source be with you.",
-            "404: Motivation not found.",
-            "Hello World! 🌎"
+            "Innovation distinguishes between a leader and a follower. — Steve Jobs",
+            "The best way to predict the future is to create it. — Peter Drucker",
+            "Code is poetry written in logic.",
+            "Simplicity is the ultimate sophistication. — Leonardo da Vinci",
+            "First, solve the problem. Then, write the code. — John Johnson",
+            "Make it work, make it right, make it fast. — Kent Beck",
+            "The only way to do great work is to love what you do. — Steve Jobs",
+            "Life is what happens when you're busy making other plans. — John Lennon",
+            "In the middle of difficulty lies opportunity. — Albert Einstein",
+            "Be yourself; everyone else is already taken. — Oscar Wilde",
+            "Two things are infinite: the universe and human stupidity. — Einstein",
+            "Dream big, start small, move fast.",
+            "Every expert was once a beginner.",
+            "Progress, not perfection."
         ];
-        document.getElementById('quoteBtn').onclick = () => {
-            document.getElementById('quoteBox').textContent = quotes[Math.floor(Math.random()*quotes.length)];
-            document.getElementById('quoteBox').classList.remove('fadeIn');
-            void document.getElementById('quoteBox').offsetWidth; // restart animation
-            document.getElementById('quoteBox').classList.add('fadeIn');
-        };
 
-        // Confetti effect
-        document.getElementById('confettiBtn').onclick = () => {
-            for(let i=0;i<30;i++){
-                let conf = document.createElement('div');
-                conf.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-                conf.style.position = 'fixed';
-                conf.style.left = (Math.random()*100)+'vw';
-                conf.style.top = '-40px';
-                conf.style.fontSize = (Math.random()*2+1)+'rem';
-                conf.style.zIndex = 9999;
-                conf.style.transition = 'top 1.2s cubic-bezier(.17,.67,.83,.67), opacity 1.2s';
-                document.body.appendChild(conf);
-                setTimeout(()=>{conf.style.top=(Math.random()*80+10)+'vh'; conf.style.opacity=0.7;},10);
-                setTimeout(()=>{conf.remove();},1300);
+        const floatingEmojis = ["✨", "🚀", "💡", "🌟", "🎯", "🔮", "🌈", "⚡"];
+        
+        // Theme system
+        const themes = ['default', 'dark', 'ocean', 'sunset'];
+        let currentThemeIndex = 0;
+        const themeIcons = ['🌙', '🌊', '🌅', '🌌'];
+
+        const themeBtn = document.getElementById('themeBtn');
+        const magicBtn = document.getElementById('magicBtn');
+        const quoteBtn = document.getElementById('quoteBtn');
+        const surpriseBtn = document.getElementById('surpriseBtn');
+        const quoteBox = document.getElementById('quoteBox');
+        const logo = document.getElementById('logo');
+
+        // Theme switcher
+        themeBtn.addEventListener('click', () => {
+            currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+            const newTheme = themes[currentThemeIndex];
+            
+            // Remove all theme classes
+            document.body.className = '';
+            if (newTheme !== 'default') {
+                document.body.classList.add(newTheme);
             }
-        };
+            
+            themeBtn.textContent = themeIcons[currentThemeIndex];
+            createParticles(); // Refresh particles with new theme
+        });
 
-        // Title animation
-        setInterval(() => {
-            document.getElementById('mainTitle').style.letterSpacing = (Math.random()*4+2) + "px";
-        }, 700);
+        // Quote generator with smooth animation
+        function showNewQuote() {
+            quoteBox.classList.add('updating');
+            
+            setTimeout(() => {
+                const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+                quoteBox.textContent = randomQuote;
+                quoteBox.classList.remove('updating');
+            }, 250);
+        }
 
-        // Surprise Me button: rotates mainContent, changes emoji, and flashes background
-        document.getElementById('surpriseBtn').onclick = () => {
-            const mainContent = document.getElementById('mainContent');
-            mainContent.style.transition = "transform 0.5s cubic-bezier(.17,.67,.83,.67)";
-            mainContent.style.transform = "rotate(" + (Math.random()*20-10) + "deg) scale(1.05)";
-            document.getElementById('emoji').textContent = "🥳";
-            document.body.style.transition = "background 0.5s";
-            document.body.style.background = "linear-gradient(135deg, #f472b6 0%, #6366f1 100%)";
-            setTimeout(()=>{
-                mainContent.style.transform = "";
-                document.body.style.background = "";
-            }, 700);
-        };
+        quoteBtn.addEventListener('click', showNewQuote);
+
+        // Surprise me button
+        surpriseBtn.addEventListener('click', () => {
+            // Multiple surprise effects
+            showNewQuote();
+            createMagicBurst();
+            logo.style.transform = 'scale(1.1) rotate(5deg)';
+            setTimeout(() => {
+                logo.style.transform = '';
+            }, 500);
+        });
+
+        // Magic button - creates floating emojis
+        magicBtn.addEventListener('click', createMagicBurst);
+
+        function createMagicBurst() {
+            const container = document.getElementById('floatingElements');
+            
+            for (let i = 0; i < 12; i++) {
+                setTimeout(() => {
+                    const emoji = document.createElement('div');
+                    emoji.className = 'floating-emoji';
+                    emoji.textContent = floatingEmojis[Math.floor(Math.random() * floatingEmojis.length)];
+                    emoji.style.left = Math.random() * 100 + 'vw';
+                    emoji.style.top = Math.random() * 100 + 'vh';
+                    emoji.style.animationDelay = Math.random() * 2 + 's';
+                    
+                    container.appendChild(emoji);
+                    
+                    // Remove after animation
+                    setTimeout(() => {
+                        emoji.remove();
+                    }, 6000);
+                }, i * 100);
+            }
+        }
+
+        // Background particles system
+        function createParticles() {
+            const container = document.getElementById('particles');
+            container.innerHTML = ''; // Clear existing particles
+            
+            for (let i = 0; i < 25; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + 'vw';
+                    particle.style.animationDelay = Math.random() * 6 + 's';
+                    particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                    
+                    container.appendChild(particle);
+                    
+                    // Remove and recreate for continuous effect
+                    setTimeout(() => {
+                        particle.remove();
+                        if (container.children.length < 25) {
+                            createParticles();
+                        }
+                    }, 8000);
+                }, i * 200);
+            }
+        }
+
+        // Initialize
+        createParticles();
+        
+        // Add some initial floating elements
+        setTimeout(createMagicBurst, 1000);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === ' ') {
+                e.preventDefault();
+                createMagicBurst();
+            } else if (e.key === 'q' || e.key === 'Q') {
+                showNewQuote();
+            } else if (e.key === 't' || e.key === 'T') {
+                themeBtn.click();
+            }
+        });
     </script>
 </body>
 </html>
