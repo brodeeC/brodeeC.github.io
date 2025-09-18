@@ -1,6 +1,135 @@
+<!DOCTYPE html>
+<html>
 <head>
     <title>Brodee</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Extra animations and effects */
+        body {
+            animation: gradientMove 10s ease-in-out infinite alternate;
+        }
+        @keyframes gradientMove {
+            0% { background: linear-gradient(135deg, #e0e7ff 0%, #f7f7fa 100%);}
+            50% { background: linear-gradient(135deg, #6366f1 0%, #e0e7ff 100%);}
+            100% { background: linear-gradient(135deg, #e0e7ff 0%, #f7f7fa 100%);}
+        }
+        .floating-emoji {
+            position: fixed;
+            left: 10vw;
+            top: 10vh;
+            font-size: 3rem;
+            animation: floatEmoji 4s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 10;
+        }
+        @keyframes floatEmoji {
+            0% { transform: translateY(0);}
+            100% { transform: translateY(40px);}
+        }
+        .theme-switcher {
+            margin: 10px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            background: #c7d2fe;
+            color: #3a3a7c;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(60,60,120,0.08);
+        }
+        .quote-box {
+            margin: 20px 0;
+            padding: 16px 24px;
+            background: #e0e7ff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(60,60,120,0.08);
+            color: #3a3a7c;
+            font-size: 1.2rem;
+            text-align: center;
+            min-height: 48px;
+        }
+        .confetti-btn {
+            margin: 10px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            background: linear-gradient(90deg, #6366f1 60%, #3a3a7c 100%);
+            color: #fff;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(60,60,120,0.08);
+        }
+    </style>
 </head>
-<h1>Brodee</h1>
-<a href="chatbot.html">Chatbot</a>
+<body>
+    <span class="floating-emoji" id="emoji">✨</span>
+    <div id="mainContent">
+        <h1 id="mainTitle">Brodee</h1>
+        <a href="chatbot.html">Chatbot</a>
+        <button class="theme-switcher" id="themeBtn">Switch Theme</button>
+        <button class="confetti-btn" id="confettiBtn">🎉 Confetti!</button>
+        <div class="quote-box" id="quoteBox">Click below for a random quote!</div>
+        <button class="theme-switcher" id="quoteBtn">Show Random Quote</button>
+    </div>
+    <script>
+        // Theme switcher
+        const themeBtn = document.getElementById('themeBtn');
+        let darkMode = false;
+        themeBtn.onclick = () => {
+            darkMode = !darkMode;
+            if (darkMode) {
+                document.body.style.background = "linear-gradient(135deg, #22223b 0%, #6366f1 100%)";
+                document.body.style.color = "#f7f7fa";
+                document.getElementById('mainContent').style.background = "#3a3a7c22";
+            } else {
+                document.body.style.background = "";
+                document.body.style.color = "";
+                document.getElementById('mainContent').style.background = "";
+            }
+        };
+
+        // Floating emoji randomizer
+        const emojis = ["✨","🚀","😎","🌈","🔥","🎈","🦄","💡","🎉"];
+        setInterval(() => {
+            document.getElementById('emoji').textContent = emojis[Math.floor(Math.random()*emojis.length)];
+        }, 1200);
+
+        // Random quote generator
+        const quotes = [
+            "Creativity is intelligence having fun. – Einstein",
+            "Code is like humor. When you have to explain it, it’s bad.",
+            "Simplicity is the soul of efficiency.",
+            "Make it work, make it right, make it fast.",
+            "The best way to predict the future is to invent it.",
+            "Why do Java developers wear glasses? Because they don’t see sharp.",
+            "First, solve the problem. Then, write the code.",
+            "Brodee: Where ideas become reality!"
+        ];
+        document.getElementById('quoteBtn').onclick = () => {
+            document.getElementById('quoteBox').textContent = quotes[Math.floor(Math.random()*quotes.length)];
+        };
+
+        // Confetti effect
+        document.getElementById('confettiBtn').onclick = () => {
+            for(let i=0;i<40;i++){
+                let conf = document.createElement('div');
+                conf.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+                conf.style.position = 'fixed';
+                conf.style.left = (Math.random()*100)+'vw';
+                conf.style.top = '-40px';
+                conf.style.fontSize = (Math.random()*2+1)+'rem';
+                conf.style.zIndex = 9999;
+                conf.style.transition = 'top 1.2s cubic-bezier(.17,.67,.83,.67), opacity 1.2s';
+                document.body.appendChild(conf);
+                setTimeout(()=>{conf.style.top=(Math.random()*80+10)+'vh'; conf.style.opacity=0.7;},10);
+                setTimeout(()=>{conf.remove();},1300);
+            }
+        };
+
+        // Title animation
+        setInterval(() => {
+            document.getElementById('mainTitle').style.letterSpacing = (Math.random()*4+2) + "px";
+        }, 700);
+    </script>
+</body>
+</html>
