@@ -1,0 +1,54 @@
+<html>
+    <a href="index.html">Home</a>
+    <h1>Chatbot</h1>
+<!-- Enter OpenAPi Key -->
+<input type="text" id="apiKeyInput" placeholder="Enter your OpenAI API Key" style="width: 300px;">
+<button id="saveApiKeyButton">Save API Key</button>
+<br><br>
+<!-- Chat Interface -->
+<div id="chatContainer" style="width: 400px; height: 500px
+; border: 1px solid #ccc; padding: 10px; overflow-y: scroll;">
+    <div id="chatMessages"></div>
+</div>
+<br>
+<input type="text" id="userInput" placeholder="Type your message here..." style="width: 300px;">
+<button id="sendButton">Send</button>
+<br><br>
+<!-- JavaScript to handle chat functionality -->
+<script>
+    let apiKey = localStorage.getItem('openaiApiKey') || '';
+    document.getElementById('apiKeyInput').value = apiKey;  
+    document.getElementById('saveApiKeyButton').onclick = function() {
+        apiKey = document.getElementById('apiKeyInput').value;
+        localStorage.setItem('openaiApiKey', apiKey);
+        alert('API Key saved!');
+    };
+    document.getElementById('sendButton').onclick = async function() {
+        const userInput = document.getElementById('userInput').value;
+        if (!userInput) return;
+        appendMessage('User', userInput);
+        document.getElementById('userInput').value = '';
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+            },
+            body: JSON.stringify({
+                model: 'gpt-3.5-turbo',
+                messages: [{ role: 'user', content: userInput }]
+            })
+        });
+        const data = await response.json();
+        const botMessage = data.choices[0].message.content;
+        appendMessage('Bot', botMessage);
+    };
+    function appendMessage(sender, message) {
+        const chatMessages = document.getElementById('chatMessages');
+        const messageElement = document.createElement('div');
+        messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
+        chatMessages.appendChild(messageElement);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+</script>
+</html>
