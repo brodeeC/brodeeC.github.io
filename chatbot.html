@@ -46,7 +46,7 @@
                         'Authorization': `Bearer ${apiKey}`
                     },
                     body: JSON.stringify({
-                        model: 'gpt-3.5-turbo', // Use 'gpt-4' if your key supports it
+                        model: 'gpt-4.1-mini', 
                         messages: [{ role: 'user', content: userInput }]
                     })
                 });
@@ -64,7 +64,7 @@
 
         function appendMessage(sender, message) {
             const chatMessages = document.getElementById('chatMessages');
-            const messageElement = document.createElement('div');
+            const messageElement = chatMessages.createElement('div');
             messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
             chatMessages.appendChild(messageElement);
             chatMessages.scrollTop = chatMessages.scrollHeight;
