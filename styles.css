@@ -1,16 +1,23 @@
 /* General styles */
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
-    background: #f7f7fa;
+    background: linear-gradient(135deg, #e0e7ff 0%, #f7f7fa 100%);
     margin: 0;
     padding: 0;
     color: #222;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 h1 {
     color: #3a3a7c;
     margin-top: 30px;
     text-align: center;
+    letter-spacing: 2px;
+    font-size: 2.5rem;
 }
 
 a {
@@ -19,52 +26,75 @@ a {
     font-weight: bold;
     margin: 20px;
     display: inline-block;
+    background: #e0e7ff;
+    padding: 8px 20px;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(60,60,120,0.08);
+    transition: background 0.2s;
 }
 
 a:hover {
     text-decoration: underline;
+    background: #c7d2fe;
+}
+
+/* Center main content */
+#mainContent, .centered-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Chatbot page styles */
 #chatContainer {
     background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(60,60,120,0.08);
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(60,60,120,0.12);
     margin: 0 auto;
     margin-bottom: 20px;
-    padding: 16px;
+    padding: 24px;
     width: 400px;
     height: 500px;
-    border: 1px solid #ccc;
+    border: 1px solid #c7d2fe;
     overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
 }
 
 #chatMessages div {
     margin-bottom: 12px;
     padding: 8px;
     border-radius: 6px;
-    background: #f0f0ff;
+    background: #e0e7ff;
+    color: #3a3a7c;
+    box-shadow: 0 1px 4px rgba(60,60,120,0.05);
 }
 
 input[type="text"] {
-    padding: 8px;
-    border-radius: 4px;
+    padding: 10px;
+    border-radius: 6px;
     border: 1px solid #bbb;
     margin-bottom: 8px;
     font-size: 16px;
+    width: 320px;
+    background: #f7f7fa;
+    box-shadow: 0 1px 4px rgba(60,60,120,0.05);
 }
 
 button {
-    padding: 8px 16px;
-    border-radius: 4px;
+    padding: 10px 20px;
+    border-radius: 6px;
     border: none;
-    background: #3a3a7c;
+    background: linear-gradient(90deg, #3a3a7c 60%, #6366f1 100%);
     color: #fff;
     font-size: 16px;
     cursor: pointer;
     margin-left: 4px;
+    box-shadow: 0 2px 8px rgba(60,60,120,0.08);
+    transition: background 0.2s;
 }
 
 button:hover {
-    background: #5757a6;
+    background: linear-gradient(90deg, #5757a6 60%, #818cf8 100%);
 }
