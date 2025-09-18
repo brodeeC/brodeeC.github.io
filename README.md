@@ -1,3 +1,5 @@
 # brodeeC.github.io
 
-## My Vibe Coding Playground
+## Playing around with AI
+* Used Copilot to start
+* Improved on Copilot's code with Claude
