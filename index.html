@@ -4,13 +4,13 @@
     <title>Brodee</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Extra animations and effects */
         body {
-            animation: gradientMove 10s ease-in-out infinite alternate;
+            animation: gradientMove 12s ease-in-out infinite alternate;
         }
         @keyframes gradientMove {
             0% { background: linear-gradient(135deg, #e0e7ff 0%, #f7f7fa 100%);}
-            50% { background: linear-gradient(135deg, #6366f1 0%, #e0e7ff 100%);}
+            33% { background: linear-gradient(135deg, #6366f1 0%, #e0e7ff 100%);}
+            66% { background: linear-gradient(135deg, #f472b6 0%, #6366f1 100%);}
             100% { background: linear-gradient(135deg, #e0e7ff 0%, #f7f7fa 100%);}
         }
         .floating-emoji {
@@ -21,54 +21,57 @@
             animation: floatEmoji 4s ease-in-out infinite alternate;
             pointer-events: none;
             z-index: 10;
+            filter: drop-shadow(0 2px 8px #6366f1);
         }
         @keyframes floatEmoji {
             0% { transform: translateY(0);}
             100% { transform: translateY(40px);}
         }
-        .theme-switcher {
-            margin: 10px;
-            padding: 8px 16px;
-            border-radius: 6px;
-            background: #c7d2fe;
-            color: #3a3a7c;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(60,60,120,0.08);
+        .theme-switcher, .confetti-btn {
+            transition: transform 0.2s;
+        }
+        .theme-switcher:active, .confetti-btn:active {
+            transform: scale(1.08) rotate(-2deg);
+        }
+        .rainbow-border {
+            border: 3px solid;
+            border-image: linear-gradient(90deg,#6366f1,#f472b6,#e0e7ff,#6366f1) 1;
+            box-shadow: 0 2px 16px rgba(99,102,241,0.12);
         }
         .quote-box {
-            margin: 20px 0;
-            padding: 16px 24px;
-            background: #e0e7ff;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(60,60,120,0.08);
-            color: #3a3a7c;
-            font-size: 1.2rem;
-            text-align: center;
-            min-height: 48px;
+            animation: fadeIn 0.7s;
         }
-        .confetti-btn {
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .surprise-btn {
             margin: 10px;
             padding: 8px 16px;
             border-radius: 6px;
-            background: linear-gradient(90deg, #6366f1 60%, #3a3a7c 100%);
+            background: linear-gradient(90deg, #f472b6 60%, #6366f1 100%);
             color: #fff;
             font-weight: bold;
             border: none;
             cursor: pointer;
             box-shadow: 0 2px 8px rgba(60,60,120,0.08);
+            transition: background 0.2s;
+        }
+        .surprise-btn:hover {
+            background: linear-gradient(90deg, #6366f1 60%, #f472b6 100%);
         }
     </style>
 </head>
 <body>
     <span class="floating-emoji" id="emoji">✨</span>
-    <div id="mainContent">
+    <div id="mainContent" class="rainbow-border">
         <h1 id="mainTitle">Brodee</h1>
         <a href="chatbot.html">Chatbot</a>
+        <button class="theme-switcher" id="themeBtn">Switch Theme</button>
         <button class="confetti-btn" id="confettiBtn">🎉 Confetti!</button>
         <div class="quote-box" id="quoteBox">Click below for a random quote!</div>
         <button class="theme-switcher" id="quoteBtn">Show Random Quote</button>
+        <button class="surprise-btn" id="surpriseBtn">Surprise Me!</button>
     </div>
     <script>
         // Theme switcher
@@ -88,7 +91,7 @@
         };
 
         // Floating emoji randomizer
-        const emojis = ["✨","🚀","😎","🌈","🔥","🎈","🦄","💡","🎉"];
+        const emojis = ["✨","🚀","😎","🌈","🔥","🎈","🦄","💡","🎉","🍕","🥳","🧠"];
         setInterval(() => {
             document.getElementById('emoji').textContent = emojis[Math.floor(Math.random()*emojis.length)];
         }, 1200);
@@ -102,15 +105,24 @@
             "The best way to predict the future is to invent it.",
             "Why do Java developers wear glasses? Because they don’t see sharp.",
             "First, solve the problem. Then, write the code.",
-            "Brodee: Where ideas become reality!"
+            "Brodee: Where ideas become reality!",
+            "Eat. Sleep. Code. Repeat.",
+            "You miss 100% of the bugs you don't catch.",
+            "Keep calm and push to main.",
+            "May the source be with you.",
+            "404: Motivation not found.",
+            "Hello World! 🌎"
         ];
         document.getElementById('quoteBtn').onclick = () => {
             document.getElementById('quoteBox').textContent = quotes[Math.floor(Math.random()*quotes.length)];
+            document.getElementById('quoteBox').classList.remove('fadeIn');
+            void document.getElementById('quoteBox').offsetWidth; // restart animation
+            document.getElementById('quoteBox').classList.add('fadeIn');
         };
 
         // Confetti effect
         document.getElementById('confettiBtn').onclick = () => {
-            for(let i=0;i<40;i++){
+            for(let i=0;i<30;i++){
                 let conf = document.createElement('div');
                 conf.textContent = emojis[Math.floor(Math.random()*emojis.length)];
                 conf.style.position = 'fixed';
@@ -129,6 +141,20 @@
         setInterval(() => {
             document.getElementById('mainTitle').style.letterSpacing = (Math.random()*4+2) + "px";
         }, 700);
+
+        // Surprise Me button: rotates mainContent, changes emoji, and flashes background
+        document.getElementById('surpriseBtn').onclick = () => {
+            const mainContent = document.getElementById('mainContent');
+            mainContent.style.transition = "transform 0.5s cubic-bezier(.17,.67,.83,.67)";
+            mainContent.style.transform = "rotate(" + (Math.random()*20-10) + "deg) scale(1.05)";
+            document.getElementById('emoji').textContent = "🥳";
+            document.body.style.transition = "background 0.5s";
+            document.body.style.background = "linear-gradient(135deg, #f472b6 0%, #6366f1 100%)";
+            setTimeout(()=>{
+                mainContent.style.transform = "";
+                document.body.style.background = "";
+            }, 700);
+        };
     </script>
 </body>
 </html>
